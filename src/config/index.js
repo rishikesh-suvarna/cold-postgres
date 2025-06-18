@@ -1,12 +1,20 @@
 import 'dotenv/config';
 
-function getEnvVar(name, required = true) {
+/**
+ * Retrieves the value of an environment variable.
+ *
+ * @param {string} name - The name of the environment variable to retrieve.
+ * @param {boolean} [required=true] - Whether the environment variable is required. If true and the variable is missing or empty, an error is thrown.
+ * @returns {string|undefined} The value of the environment variable, or undefined if not required and not set.
+ * @throws {Error} If the environment variable is required but not set or is empty.
+ */
+const getEnvVar = (name, required = true) => {
   const value = process.env[name];
   if (required && (value === undefined || value.trim() === '')) {
     throw new Error(`Missing required environment variable: ${name}`);
   }
   return value;
-}
+};
 
 export const PG_HOST = getEnvVar('PG_HOST');
 export const PG_PORT = parseInt(getEnvVar('PG_PORT'), 10);
