@@ -1,7 +1,7 @@
 import cron from 'node-cron';
 
 import { createBackupDump } from '../utils/createBackupDump.js';
-import { CRON_SCHEDULES } from '../config/index.js';
+import { CRON_SCHEDULES } from '../config/env.config.js';
 import { cronToText } from '../utils/cronsToText.js';
 import logger from '../utils/logger.js';
 

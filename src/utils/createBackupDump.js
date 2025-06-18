@@ -4,7 +4,7 @@ import { promisify } from 'util';
 import moment from 'moment';
 
 import logger from './logger.js';
-import { PG_HOST, PG_PORT, PG_USER, PG_PASSWORD, PG_DATABASE, S3_BUCKET_NAME, S3_PREFIX } from '../config/index.js';
+import { PG_HOST, PG_PORT, PG_USER, PG_PASSWORD, PG_DATABASE, S3_BUCKET_NAME, S3_PREFIX } from '../config/env.config.js';
 import { uploadToStorage } from '../lib/storage.js';
 
 const execAsync = promisify(exec);

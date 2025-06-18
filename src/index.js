@@ -1,7 +1,7 @@
 import 'dotenv/config';
 
 import logger from './utils/logger.js';
-import { PG_DATABASE, S3_BUCKET_NAME } from './config/index.js';
+import { PG_DATABASE, S3_BUCKET_NAME } from './config/env.config.js';
 
 import './lib/scheduler.js';
 
