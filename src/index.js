@@ -21,23 +21,14 @@ import {
   S3_PREFIX,
   CRON_SCHEDULES,
 } from './config/index.js';
+import { uploadToStorage } from './lib/storage.js';
 
 const execAsync = promisify(exec);
 
 if (!CRON_SCHEDULES || !S3_BUCKET_NAME) {
-  logger.error(
-    'CRON_SCHEDULES and S3_BUCKET_NAME environment variables must be set.'
-  );
+  logger.error('CRON_SCHEDULES and S3_BUCKET_NAME environment variables must be set.');
   process.exit(1);
 }
-
-const s3 = new S3Client({
-  region: AWS_REGION,
-  credentials: {
-    accessKeyId: AWS_ACCESS_KEY_ID,
-    secretAccessKey: AWS_SECRET_ACCESS_KEY,
-  },
-});
 
 async function createPostgresDump() {
   const FORMATTED_TIMESTAMP = moment().format('YYYYMMDD_HHmmss');
@@ -51,18 +42,9 @@ async function createPostgresDump() {
     await execAsync(cmd);
 
     const fileStream = createReadStream(DUMP_FILE);
+    await uploadToStorage(S3_BUCKET_NAME, KEY, fileStream);
 
-    const uploadCommand = new PutObjectCommand({
-      Bucket: S3_BUCKET_NAME,
-      Key: KEY,
-      Body: fileStream,
-      StorageClass: 'GLACIER',
-    });
-
-    await s3.send(uploadCommand);
-    logger.info(
-      `Backup successful: ${KEY} uploaded to S3 bucket ${S3_BUCKET_NAME}`
-    );
+    logger.info(`Backup successful: ${KEY} uploaded to S3 bucket ${S3_BUCKET_NAME}`);
   } catch (error) {
     logger.error(`Backup failed: ${error.message}`);
   } finally {
@@ -88,15 +70,7 @@ schedules.forEach((cronExp) => {
   });
 });
 
-logger.info(
-  `Backup service started with the following database connection details:
-  Host: ${PG_HOST}
-  Port: ${PG_PORT}
-  User: ${PG_USER}
-  Database: ${PG_DATABASE}
-  S3 Bucket: ${S3_BUCKET_NAME}
-  S3 Prefix: ${S3_PREFIX}`
-);
+logger.info(`Backup service started with the following database connection details: Database: ${PG_DATABASE} S3 Bucket: ${S3_BUCKET_NAME}`);
 
 schedules.forEach((cronExp) => {
   const humanReadable = cronToText(cronExp);
