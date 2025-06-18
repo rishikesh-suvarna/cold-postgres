@@ -1,5 +1,6 @@
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION } from '../config/index.js';
+import logger from '../utils/logger.js';
 
 export const s3 = new S3Client({
   region: AWS_REGION,
@@ -18,9 +19,10 @@ export const uploadToStorage = async (bucketName, key, body) => {
       StorageClass: 'GLACIER',
     });
     await s3.send(uploadCommand);
-    console.log(`File uploaded successfully to ${bucketName}/${key}`);
+    logger.info(`File uploaded successfully to S3: ${bucketName}/${key}`);
   } catch (error) {
-    console.error(`Error uploading file to S3: ${error.message}`);
+    logger.error(`Failed to upload file to S3: ${error.message}`);
+    throw error;
   }
 };
 
