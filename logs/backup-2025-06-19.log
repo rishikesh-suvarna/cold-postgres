@@ -1,0 +1,15 @@
+[2025-06-18T22:20:13.961Z] INFO: Backup service started with the following schedules:
+[2025-06-18T22:20:51.446Z] INFO: Backup service started with the following schedules: */10 * * * * for database iskcon_dms_prod on host localhost:5432
+[2025-06-18T22:21:11.257Z] INFO: Backup service started with the following schedules: */10 * * * * for database wakeflow-invoice-dev on host localhost:5432
+[2025-06-18T22:21:25.000Z] INFO: Backup service started with the following schedules: */10 * * * * * for database wakeflow-invoice-dev on host localhost:5432
+[2025-06-18T22:21:30.016Z] INFO: Running backup task for schedule: */10 * * * * *
+[2025-06-18T22:21:30.017Z] INFO: Executing command: PGPASSWORD="" pg_dump -h localhost -p 5432 -U rishikeshsuvarna -d wakeflow-invoice-dev -F p -f /tmp/db_backup_20250619_035130.sql
+[2025-06-18T22:21:32.919Z] INFO: Backup successful: dms_backups/db_backup_20250619_035130.sql uploaded to S3 bucket padma-db-backups
+[2025-06-18T22:26:36.813Z] INFO: Backup service started with the following database connection details:
+  Host: localhost
+  Port: 5432
+  User: rishikeshsuvarna
+  Database: wakeflow-invoice-dev
+  S3 Bucket: padma-db-backups
+  S3 Prefix: dms_backups
+[2025-06-18T22:26:36.815Z] INFO: Cron schedule: "*/30 * * * * *" - Every 30 seconds
