@@ -1,4 +1,4 @@
-# Cold Postgres
+# Cold Postgres (Internal Tool)
 
 Automated PostgreSQL backups to Amazon S3 with Glacier storage class using cron schedules, Winston logging, and modular Node.js structure.
 
