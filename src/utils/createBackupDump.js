@@ -10,9 +10,9 @@ import { uploadToStorage } from '../lib/storage.js';
 const execAsync = promisify(exec);
 
 export const createBackupDump = async () => {
-  const FORMATTED_TIMESTAMP = moment().format('YYYYMMDD_HHmmss');
-  const DUMP_FILE = `/tmp/db_backup_${FORMATTED_TIMESTAMP}.sql`;
-  const KEY = `${S3_PREFIX}/db_backup_${FORMATTED_TIMESTAMP}.sql`;
+  const FORMATTED_TIMESTAMP = moment().format('YYYY-MM-DD_HH:mm:ss');
+  const DUMP_FILE = `/tmp/db-backup-${FORMATTED_TIMESTAMP}.sql`;
+  const KEY = `${S3_PREFIX}/db-backup-${FORMATTED_TIMESTAMP}.sql`;
 
   const cmd = `PGPASSWORD="${PG_PASSWORD}" pg_dump -h ${PG_HOST} -p ${PG_PORT} -U ${PG_USER} -d ${PG_DATABASE} -F p -f ${DUMP_FILE}`;
   if (process.env.NODE_ENV === 'development') {
